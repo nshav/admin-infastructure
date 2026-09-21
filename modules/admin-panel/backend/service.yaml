@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: adm-panel-svc-backend
+  namespace: admin
+  labels:
+    app: adm-panel-backend
+    service: adm-panel-backend
+spec:
+  ports:
+  - name: adm-panel-port
+    port: 80
+    targetPort: 8080
+  selector:
+    app: adm-panel-backend

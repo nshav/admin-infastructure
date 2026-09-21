@@ -1,0 +1,27 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: argocd-ingress
+  namespace: argocd
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    konghq.com/protocol: "http"
+    konghq.com/https-redirect-status-code: "301"
+spec:
+  ingressClassName: kong
+  tls:
+  - hosts:
+    - argocd.requestsbin.online
+    secretName: argocd-tls
+  rules:
+  - host: argocd.requestsbin.online
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: argocd-server
+            port:
+              number: 80

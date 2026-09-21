@@ -1,0 +1,4 @@
+gateway:
+  proxy:
+    type: LoadBalancer
+    externalTrafficPolicy: Local

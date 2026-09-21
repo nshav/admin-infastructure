@@ -1,0 +1,32 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: adm-panel-ingress
+  namespace: admin
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: kong
+  tls:
+  - hosts:
+    - rlimit-panel.requestsbin.online
+    secretName: rlimit-panel-tls
+  rules:
+  - host: rlimit-panel.requestsbin.online
+    http:
+      paths:
+      - path: /api
+        pathType: Prefix
+        backend:
+          service:
+            name: adm-panel-svc-backend
+            port:
+              number: 80
+      - path: / 
+        pathType: Prefix
+        backend:
+          service:
+            name: adm-panel-svc-frontend
+            port:
+              number: 80

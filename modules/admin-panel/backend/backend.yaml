@@ -1,0 +1,36 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-backend
+  namespace: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adm-panel-backend
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: adm-panel-backend
+        version: v1
+    spec:
+      #serviceAccountName: httpbin
+      securityContext:
+        fsGroup: 65532
+      containers:
+      - image: nikshav/rate-limiter-backend:1.0.0
+        imagePullPolicy: IfNotPresent
+        name: adm-panel
+        volumeMounts:  
+        - mountPath: "/data"
+          name: sqlite
+        ports:
+        - containerPort: 8080
+      imagePullSecrets:
+        - name: docker-auth
+      volumes:  
+        - name: sqlite
+          persistentVolumeClaim:  
+            claimName: sqlite-pvc

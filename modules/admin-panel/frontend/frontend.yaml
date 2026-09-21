@@ -1,0 +1,29 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: admin-frontend
+  namespace: admin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: adm-panel-frontend
+      version: v1
+  template:
+    metadata:
+      labels:
+        app: adm-panel-frontend
+        version: v1
+    spec:
+      #serviceAccountName: httpbin
+      securityContext:
+        fsGroup: 65532
+      containers:
+      - image: nikshav/rate-limiter-frontend:1.0.0
+        imagePullPolicy: IfNotPresent
+        name: adm-panel-frontend
+        ports:
+        - containerPort: 80
+      imagePullSecrets:
+        - name: docker-auth
