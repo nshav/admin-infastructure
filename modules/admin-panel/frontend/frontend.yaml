@@ -20,7 +20,7 @@ spec:
       securityContext:
         fsGroup: 65532
       containers:
-      - image: nikshav/rate-limiter-frontend:1.0.0
+      - image: nikshav/rate-limiter-frontend:1.2.1
         imagePullPolicy: IfNotPresent
         name: adm-panel-frontend
         ports:

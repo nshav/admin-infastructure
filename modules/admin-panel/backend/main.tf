@@ -2,6 +2,10 @@ resource "kubernetes_manifest" "database-pvc" {
   manifest = yamldecode(file("${path.module}/storage.yaml"))
 }
 
+resource "kubernetes_manifest" "github-cm" {
+  manifest = yamldecode(file("${path.module}/github_repo.yaml"))
+}
+
 resource "kubernetes_manifest" "backend" {
   manifest = yamldecode(file("${path.module}/backend.yaml"))
 }

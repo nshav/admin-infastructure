@@ -1,3 +1,5 @@
 .terraform/
 *.tfstate
 *.tfstate.backup
+modules/admin-panel/github_creds.yaml
+modules/admin-panel/docker_creds.yaml

@@ -3,6 +3,6 @@ resource "kubernetes_manifest" "namespace" {
 }
 
 resource "kubernetes_manifest" "ingress" {
-  manifest = yamldecode(file("${path.module}/ingress_kong.yaml"))
+  manifest   = yamldecode(file("${path.module}/ingress_kong.yaml"))
   depends_on = [kubernetes_manifest.namespace]
 }

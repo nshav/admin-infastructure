@@ -20,9 +20,25 @@ spec:
       securityContext:
         fsGroup: 65532
       containers:
-      - image: nikshav/rate-limiter-backend:1.0.0
+      - image: nikshav/rate-limiter-backend:1.2.0
         imagePullPolicy: IfNotPresent
         name: adm-panel
+        env:
+          - name: DEPLOY_REPO               
+            valueFrom:
+              configMapKeyRef:
+                name: github-env
+                key: DEPLOY_REPO
+          - name: DEPLOY_BRANCH
+            valueFrom:
+              configMapKeyRef:
+                name: github-env
+                key: DEPLOY_BRANCH
+          - name: GITHUB_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: github-auth
+                key: GITHUB_TOKEN
         volumeMounts:  
         - mountPath: "/data"
           name: sqlite

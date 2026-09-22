@@ -1,0 +1,39 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: agents
+  namespace: argocd
+spec:
+  goTemplate: true
+  generators:
+    - git:
+        repoURL: https://github.com/nshav/agent-deployments.git
+        revision: main
+        directories:
+          - path: agents/*/*
+  template:
+    metadata:
+      name: '{{index .path.segments 1}}-{{.path.basename}}'
+      finalizers:
+        - resources-finalizer.argocd.argoproj.io
+    spec:
+      project: default
+      sources:
+        - repoURL: https://github.com/nshav/agent-deployments.git
+          targetRevision: main
+          ref: values
+        - repoURL: https://github.com/nshav/agent-deployments.git
+          targetRevision: main
+          path: charts/agent
+          helm:
+            valueFiles:
+              - '$values/{{.path.path}}/values.yaml'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: 'agent-{{index .path.segments 1}}-{{.path.basename}}'
+      syncPolicy:
+        syncOptions:
+          - CreateNamespace=true
+        automated:
+          prune: true
+          selfHeal: true
