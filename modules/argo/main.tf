@@ -20,7 +20,7 @@ resource "kubernetes_manifest" "ingress" {
 }
 
 
-resource "kubernetes_manifest" "namespace" {
+resource "kubernetes_manifest" "applicationset" {
   manifest = yamldecode(file("${path.module}/applicationset.yaml"))
 }
 
